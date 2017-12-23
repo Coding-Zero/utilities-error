@@ -27,12 +27,12 @@ public class BusinessError extends RuntimeException {
         return details;
     }
 
-    public static BusinessErrorBuilder raise() {
-        return new BusinessError.BusinessErrorBuilder();
+    public static BusinessErrorBuilder raise(ErrorType type) {
+        return new BusinessError.BusinessErrorBuilder(type);
     }
 
     public static BusinessErrorBuilder noSuchEntityFound() {
-        return new BusinessError.BusinessErrorBuilder().type(DefaultErrors.NO_SUCH_ENTITY_FOUND);
+        return new BusinessError.BusinessErrorBuilder(DefaultErrors.NO_SUCH_ENTITY_FOUND);
     }
 
     public static class BusinessErrorBuilder {
@@ -41,15 +41,10 @@ public class BusinessError extends RuntimeException {
         private String message;
         private Map<String, Object> details;
 
-        private BusinessErrorBuilder() {
-            this.type = null;
+        private BusinessErrorBuilder(ErrorType type) {
+            this.type = type;
             this.message = null;
             this.details = new HashMap<>();
-        }
-
-        public BusinessErrorBuilder type(ErrorType type) {
-            this.type = type;
-            return this;
         }
 
         public BusinessErrorBuilder message(String message) {
